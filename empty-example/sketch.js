@@ -1,8 +1,3 @@
-// import Rectangle from './rectangle.js';
-
-// let windowWidth = windowWidth;
-
-
 
 class Rectangle {
     constructor(xPos,count, colour) {
@@ -17,7 +12,6 @@ class Rectangle {
         // this.inputField = inputField;  
         console.log(this.xPos,this.count,this.colour,this.width,this.y,this.x,this.roundedEdges);
     }
-    // var colour = [];
 
     draw() {
       noStroke();
@@ -30,12 +24,7 @@ class Rectangle {
         let inp = createInput('');
     }
 
-  
 }
-
-
-
-// export default class Rectangle {};
 
 let rectangles;
 let colourArray;
@@ -60,21 +49,9 @@ function setup() {
   colourArray = [[0,0,0],[0,255,0],[255,0,0]];
   // colourArray.push([0,0,0],[0,255,0]);
 
-  // let inp = createInput('');
-  // inp.size(100);
-  // inp.input(myInputEvent);
-  // function myInputEvent() {
-  //   print('you are typing: ', this.value());
-  // }
-// rectangle1 = new Rectangle(0,3,[0,0,0]);
-// rectangle2 = new Rectangle(1,3,[0,255,0]);
-// rectangle3 = new Rectangle(2,3,[255,0,0]);
-
 rectangles = generateRectangles(colourArray);
 
 }
-
-
 
 
 function draw() {
@@ -85,35 +62,4 @@ function draw() {
  });
 
 
-
-// let rectangle1 = new Rectangle(0, 1,[244,244,255]);
-// rectDraw();
-// rectangleFill();
-
-  // var a = [244,244,255];
-  // var b = [212,212,255,0.6];
-  // var c = [212,212,255];
-  // var d = [244,54,255];
-  // var e = [244,9,255];
-  // var f = [244,1,255];
-
-
-  // fill(a[0],a[1],a[2]);
-  // noStroke();
-  // rect(0, 0, width/6, height, 20);
-
-  // fill(b[0],b[1],b[2],b[3]*255);
-  // rect(width/6, 0, width/6, height, 20);
-
-  // fill(c[0],c[1],c[2]);
-  // rect(width*2/6, 0, width/6, height, 20);
-
-  // fill(d[0],d[1],d[2]);
-  // rect(width*3/6, 0, width/6, height, 20);
-
-  // fill(e[0],e[1],e[2]);
-  // rect(width*4/6, 0, width/6, height, 20);
-
-  // fill(f[0],f[1],f[2]);
-  // rect(width*5/6, 0, width/6, height, 20);
   };
