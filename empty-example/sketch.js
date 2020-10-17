@@ -14,6 +14,7 @@ class Rectangle {
     }
 
     draw() {
+      noLoop();
       noStroke();
       fill(this.colour[0], this.colour[1], this.colour[2]); 
       rect(this.x, this.y, this.width, windowHeight-20, this.roundedEdges);
