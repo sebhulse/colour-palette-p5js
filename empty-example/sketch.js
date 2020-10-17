@@ -37,23 +37,28 @@ class Rectangle {
 
 // export default class Rectangle {};
 
-// let rectangles;
-// let colourArray = [[]];
+let rectangles;
+let colourArray;
 
-// function generateRectangles(colourArray) {
 
-//   let rectangles = [];
-//   let countColours = colourArray.length;
+function generateRectangles(colourArray) {
 
-//   for (let index = 0; index < countColours; index++) {
-//     rectangles.push(new Rectangle(index,countColours,colourArray[index]));
-//   }
-//   return rectangles;
-// }
+  let rectangles = [];
+  let countColours = colourArray.length;
+  console.log(countColours);
+
+  for (let index = 0; index < countColours; index++) {
+    rectangles.push(new Rectangle(index,countColours,colourArray[index]));
+  }
+  return rectangles;
+}
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  colourArray = [[0,0,0],[0,255,0],[255,0,0]];
+  // colourArray.push([0,0,0],[0,255,0]);
 
   // let inp = createInput('');
   // inp.size(100);
@@ -65,7 +70,7 @@ function setup() {
 // rectangle2 = new Rectangle(1,3,[0,255,0]);
 // rectangle3 = new Rectangle(2,3,[255,0,0]);
 
-rectangles = [new Rectangle(0,3,[0,0,0]), new Rectangle(1,3,[0,255,0]), new Rectangle(2,3,[255,0,0])];
+rectangles = generateRectangles(colourArray);
 
 }
 
