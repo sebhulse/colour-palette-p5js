@@ -1,6 +1,10 @@
+let rectangles;
+let colourArray;
+let colourInputs;
+colourArray = [];
 
 class Rectangle {
-    constructor(xPos,count, colour) {
+    constructor(xPos, count, colour) {
         this.xPos = xPos;
         this.count = count;
         this.colour = colour;
@@ -9,58 +13,75 @@ class Rectangle {
         this.y = 0;
         this.x = this.width * xPos;
         this.roundedEdges = 20;
-        // this.inputField = inputField;  
         console.log(this.xPos,this.count,this.colour,this.width,this.y,this.x,this.roundedEdges);
     }
-
     draw() {
       noLoop();
       noStroke();
-      fill(this.colour[0], this.colour[1], this.colour[2]); 
-      rect(this.x, this.y, this.width, windowHeight-20, this.roundedEdges);
+      fill(this.colour); 
+      rect(this.x, this.y, this.width, windowHeight, this.roundedEdges);
       // console.log(x, y, width, windowHeight, roundedEdges);
     }
-
-    colourInput() {
-        let inp = createInput('');
-    }
-
 }
 
-let rectangles;
-let colourArray;
+
+class RectangleColour {
+  constructor() {}
+  colourPicker() {
+    let input = createColorPicker('#ed225d');
+    let submitButton = createButton('Submit Colour Array!');
+    submitButton.mousePressed(input.value().push(colourArray));
+  }
+}
 
 
 function generateRectangles(colourArray) {
-
-  let rectangles = [];
-  let countColours = colourArray.length;
-  console.log(countColours);
-
-  for (let index = 0; index < countColours; index++) {
-    rectangles.push(new Rectangle(index,countColours,colourArray[index]));
+  rectangles = [];
+  console.log(colourArray.length);
+  for (let index = 0; index < colourArray.length; index++) {
+    rectangles.push(new Rectangle(index,colourArray.length,colourArray[index]));
   }
   return rectangles;
 }
 
 
+function generateColourPicker(colourArray) {
+  colourInputs = [];
+for (let index = 0; index < colourArray.length; index++) {
+  colourInputs.push(new RectangleColour());
+}
+return colourInputs;
+}
+
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  colourArray = [[0,0,0],[0,255,0],[255,0,0]];
-  // colourArray.push([0,0,0],[0,255,0]);
+  // [0,0,0],[0,255,0],[255,0,0]
+  
+ 
 
-rectangles = generateRectangles(colourArray);
+
+  rectangles = generateRectangles(colourArray);
+  colourInputs = generateColourPicker();
 
 }
 
 
 function draw() {
   background(255);
+console.log(colourArray.length);
+  if (colourArray.length == 0) {
+  colourInputs.colourPicker();
+  }
 
  rectangles.forEach(element => {
    element.draw();
  });
+ 
+ colourInputs.forEach(element => {
+   element.colourPicker();
+ })
 
-
-  };
+};
