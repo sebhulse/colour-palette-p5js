@@ -15,7 +15,7 @@ function draw() {
  noLoop();
   let hexedColour = colorPicker.value();
   let colour = colorPicker.color();
-  colourArray.push(hexedColour);
+  colourArray.push(hexedColour); // needs to be a hex value to push to array, the p5.color wont add to an array
   console.log(colourArray);
-   background(colour);
+   background(colour); 
 }
