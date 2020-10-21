@@ -1,6 +1,8 @@
 let rectangles;
 let colourArray;
 colourArray = ["#ed225d", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
+let colourPicker;
+let hexedColour;
 
 class Rectangle {
   constructor(xPos, count, colour) {
@@ -11,7 +13,7 @@ class Rectangle {
     this.width = windowWidth / this.count;
     this.y = 0;
     this.x = this.width * xPos;
-    this.roundedEdges = 20;
+    this.roundedEdges = 15;
     this.stroke = this.colour;
     this.strokeWeight = 3;
     this.crosConst = 25;
@@ -57,8 +59,6 @@ class Rectangle {
     }
   }
 
-  //   this.crossFactor = this.width - this.width / 9;
-
   crossDraw() {
     stroke(0);
     line(
@@ -101,11 +101,11 @@ function popRectangle(index) {
   console.log("colourArray array after splice: " + colourArray);
   console.log("selected rectangle is: " + index);
   redraw();
-  setup();
+  //   setup();
 }
 
 function mousePressed() {
-  for (let i = rectangles.length - 1; i >= 0; i--) {
+  for (let i = 0; i < colourArray.length; i++) {
     if (
       rectangles[i].bodyContains(mouseX, mouseY) &&
       !rectangles[i].crossContains(mouseX, mouseY)
@@ -116,37 +116,55 @@ function mousePressed() {
     } else {
       rectangles[i].selectRectangle(rectangles[i].colour);
     }
+    // generateRectangles();
     redraw();
   }
 }
 
-function generateRectangles() {
-  rectangles = [];
+// function generateRectangles() {
+//   rects = [];
 
-  for (let index = 0; index < colourArray.length; index++) {
-    rectangles.push(
-      new Rectangle(index, colourArray.length, colourArray[index])
-    );
-  }
+//   for (let index = 0; index < colourArray.length; index++) {
+//     rects.push(new Rectangle(index, colourArray.length, colourArray[index]));
+//   }
+//   rectangles = rects;
+// }
 
-  return rectangles;
+function submitColour() {
+  hexedColour = colourPicker.value();
+  colourArray.push(hexedColour);
+  console.log(colourArray);
+  //   generateRectangles();
+  redraw(5);
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight - 30);
-  rectangles = generateRectangles();
+  //   generateRectangles();
+
+  rectangles = [];
+
+  colourPicker = createColorPicker();
+  colourPicker.input(submitColour);
 }
 
 function draw() {
   noLoop();
   background(255);
 
-  for (let i = rectangles.length - 1; i >= 0; i--) {
+  rectangles = [];
+  for (let index = 0; index < colourArray.length; index++) {
+    rectangles.push(
+      new Rectangle(index, colourArray.length, colourArray[index])
+    );
+  }
+
+  for (let i = 0; i < rectangles.length; i++) {
     rectangles[i].rectangleDraw();
+    rectangles[i].selectRectangle(0);
     if (rectangles[i].bodyContains(mouseX, mouseY)) {
       rectangles[i].rectangleDraw();
       rectangles[i].crossDraw();
-      rectangles[i].selectRectangle(0);
     }
   }
 }
