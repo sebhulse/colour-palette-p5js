@@ -1,6 +1,6 @@
 let rectangles;
 let colourArray;
-colourArray = ["#ed225d", "#d95000", "#c3d117"];
+colourArray = ["#ed225d", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
 
 class Rectangle {
   constructor(xPos, count, colour) {
@@ -14,6 +14,8 @@ class Rectangle {
     this.roundedEdges = 20;
     this.stroke = this.colour;
     this.strokeWeight = 3;
+    this.crosConst = 25;
+    this.crossFactor = this.width - this.crosConst * 2;
     console.log(
       this.xPos,
       this.count,
@@ -29,18 +31,12 @@ class Rectangle {
     this.stroke = dark;
   }
 
-  popRectangle(index) {
-    console.log(
-      "You clicked on the cross with index number: " + index + " innit!"
-    );
-  }
-
   crossContains(px, py) {
     if (
-      px >= this.x + (this.width - this.width / 9) &&
-      px <= this.x + (this.width - this.width / 9) + 25 &&
-      py >= this.y + 25 &&
-      py <= this.y + 50
+      px >= this.x + this.crossFactor &&
+      px <= this.x + this.crossFactor + this.crosConst &&
+      py >= this.y + this.crosConst &&
+      py <= this.y + this.crosConst * 2
     ) {
       return true;
     } else {
@@ -61,19 +57,21 @@ class Rectangle {
     }
   }
 
+  //   this.crossFactor = this.width - this.width / 9;
+
   crossDraw() {
     stroke(0);
     line(
-      this.x + (this.width - this.width / 9),
-      this.y + 25,
-      this.x + (this.width - this.width / 9) + 25,
-      this.y + 50
+      this.x + this.crossFactor,
+      this.y + this.crosConst,
+      this.x + this.crossFactor + this.crosConst,
+      this.y + this.crosConst * 2
     );
     line(
-      this.x + (this.width - this.width / 9) + 25,
-      this.y + 25,
-      this.x + (this.width - this.width / 9),
-      this.y + 50
+      this.x + this.crossFactor + this.crosConst,
+      this.y + this.crosConst,
+      this.x + this.crossFactor,
+      this.y + this.crosConst * 2
     );
   }
 
@@ -91,6 +89,21 @@ class Rectangle {
   }
 }
 
+function popRectangle(index) {
+  console.log(
+    "You clicked on the cross with index number: " + index + " innit!"
+  );
+  console.log("rectangles array before splice: " + rectangles);
+  console.log("colourArray array before splice: " + colourArray);
+  rectangles.splice(index, 1);
+  colourArray.splice(index, 1);
+  console.log("rectangles array after splice: " + rectangles);
+  console.log("colourArray array after splice: " + colourArray);
+  console.log("selected rectangle is: " + index);
+  redraw();
+  setup();
+}
+
 function mousePressed() {
   for (let i = rectangles.length - 1; i >= 0; i--) {
     if (
@@ -99,7 +112,7 @@ function mousePressed() {
     ) {
       rectangles[i].selectRectangle(0);
     } else if (rectangles[i].crossContains(mouseX, mouseY)) {
-      rectangles[i].popRectangle(i);
+      popRectangle(i);
     } else {
       rectangles[i].selectRectangle(rectangles[i].colour);
     }
@@ -121,20 +134,19 @@ function generateRectangles() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight - 30);
-
   rectangles = generateRectangles();
-  draw();
 }
 
 function draw() {
   noLoop();
   background(255);
 
-  rectangles.forEach((element) => {
-    element.rectangleDraw();
-    if (element.bodyContains(mouseX, mouseY)) {
-      element.rectangleDraw();
-      element.crossDraw();
+  for (let i = rectangles.length - 1; i >= 0; i--) {
+    rectangles[i].rectangleDraw();
+    if (rectangles[i].bodyContains(mouseX, mouseY)) {
+      rectangles[i].rectangleDraw();
+      rectangles[i].crossDraw();
+      rectangles[i].selectRectangle(0);
     }
-  });
+  }
 }
