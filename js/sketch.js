@@ -18,15 +18,6 @@ class Rectangle {
     this.strokeWeight = 3;
     this.crosConst = 25;
     this.crossFactor = this.width - this.crosConst * 2;
-    console.log(
-      this.xPos,
-      this.count,
-      this.colour,
-      this.width,
-      this.y,
-      this.x,
-      this.roundedEdges
-    );
   }
 
   selectRectangle(dark) {
@@ -86,23 +77,13 @@ class Rectangle {
       windowHeight - this.strokeWeight,
       this.roundedEdges
     );
-    // text(this.colour);
   }
 }
 
 function popRectangle(index) {
-  console.log(
-    "You clicked on the cross with index number: " + index + " innit!"
-  );
-  console.log("rectangles array before splice: " + rectangles);
-  console.log("colourArray array before splice: " + colourArray);
   rectangles.splice(index, 1);
   colourArray.splice(index, 1);
-  console.log("rectangles array after splice: " + rectangles);
-  console.log("colourArray array after splice: " + colourArray);
-  console.log("selected rectangle is: " + index);
   redraw();
-  //   setup();
 }
 
 function mousePressed() {
@@ -117,7 +98,6 @@ function mousePressed() {
     } else {
       rectangles[i].selectRectangle(rectangles[i].colour);
     }
-    // generateRectangles();
     redraw();
   }
 }
@@ -125,14 +105,11 @@ function mousePressed() {
 function submitColour() {
   hexedColour = colourPicker.value();
   colourArray.push(hexedColour);
-  console.log(colourArray);
-  //   generateRectangles();
   redraw(5);
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  //   generateRectangles();
 
   rectangles = [];
 
