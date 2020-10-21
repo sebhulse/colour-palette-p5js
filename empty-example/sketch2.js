@@ -13,7 +13,7 @@ class Rectangle {
     this.x = this.width * xPos;
     this.roundedEdges = 20;
     this.stroke = this.colour;
-    this.strokeWeight = 4;
+    this.strokeWeight = 3;
     console.log(
       this.xPos,
       this.count,
@@ -25,22 +25,60 @@ class Rectangle {
     );
   }
 
-  contains(px, py) {
+  selectRectangle(dark) {
+    this.stroke = dark;
+  }
+
+  popRectangle(index) {
+    console.log(
+      "You clicked on the cross with index number: " + index + " innit!"
+    );
+  }
+
+  crossContains(px, py) {
     if (
-      px >= this.x &&
+      px >= this.x + (this.width - this.width / 9) &&
+      px <= this.x + (this.width - this.width / 9) + 25 &&
+      py >= this.y + 25 &&
+      py <= this.y + 50
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bodyContains(px, py) {
+    if (
+      px >= this.x + 1 &&
       px <= this.x + this.width &&
-      py >= this.y &&
+      py >= this.y + 1 &&
       py <= this.y + windowHeight - 30
     ) {
-      this.stroke = 0;
+      return true;
     } else {
-      this.stroke = this.colour;
+      return false;
     }
-    console.log(this.stroke);
+  }
+
+  crossDraw() {
+    stroke(0);
+    line(
+      this.x + (this.width - this.width / 9),
+      this.y + 25,
+      this.x + (this.width - this.width / 9) + 25,
+      this.y + 50
+    );
+    line(
+      this.x + (this.width - this.width / 9) + 25,
+      this.y + 25,
+      this.x + (this.width - this.width / 9),
+      this.y + 50
+    );
   }
 
   rectangleDraw() {
-    strokeWeight(4);
+    strokeWeight(this.strokeWeight);
     stroke(this.stroke);
     fill(this.colour);
     rect(
@@ -55,9 +93,18 @@ class Rectangle {
 
 function mousePressed() {
   for (let i = rectangles.length - 1; i >= 0; i--) {
-    rectangles[i].contains(mouseX, mouseY);
+    if (
+      rectangles[i].bodyContains(mouseX, mouseY) &&
+      !rectangles[i].crossContains(mouseX, mouseY)
+    ) {
+      rectangles[i].selectRectangle(0);
+    } else if (rectangles[i].crossContains(mouseX, mouseY)) {
+      rectangles[i].popRectangle(i);
+    } else {
+      rectangles[i].selectRectangle(rectangles[i].colour);
+    }
+    redraw();
   }
-  redraw();
 }
 
 function generateRectangles() {
@@ -82,12 +129,12 @@ function setup() {
 function draw() {
   noLoop();
   background(255);
-  console.log(colourArray);
-  console.log(rectangles);
-
-  console.log(colourArray.length);
 
   rectangles.forEach((element) => {
     element.rectangleDraw();
+    if (element.bodyContains(mouseX, mouseY)) {
+      element.rectangleDraw();
+      element.crossDraw();
+    }
   });
 }
