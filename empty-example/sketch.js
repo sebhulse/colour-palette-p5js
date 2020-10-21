@@ -39,7 +39,6 @@ class RectangleColour {
     let submitButton = createButton("Submit Colour!");
     submitButton.mousePressed(function () {
       colourArray.push(input.value());
-      console.log(colourArray);
       renderPage();
     });
   }
@@ -48,13 +47,11 @@ class RectangleColour {
 function renderPage() {
   rectangles = generateRectangles();
   colourInputs = generateColourPicker();
-  console.log(colourInputs);
-  draw();
+  redraw();
 }
 
 function generateRectangles() {
   rectangles = [];
-  console.log(colourArray.length);
 
   for (let index = 0; index < colourArray.length; index++) {
     rectangles.push(
@@ -67,7 +64,6 @@ function generateRectangles() {
 
 function generateColourPicker() {
   colourInputs = [];
-  console.log(colourInputs);
 
   for (let index = 0; index < colourArray.length; index++) {
     colourInputs.push(new RectangleColour());
@@ -85,6 +81,9 @@ function setup() {
 function draw() {
   noLoop();
   background(255);
+  console.log(colourArray);
+  console.log(colourInputs);
+  console.log(rectangles);
 
   console.log(colourArray.length);
 
