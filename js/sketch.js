@@ -94,6 +94,11 @@ class Rectangle {
     textAlign(CENTER, CENTER);
     rotate(radians(270));
     text(colourArray[this.xPos], (windowHeight / 4) * -1, this.x);
+    text(
+      "rgb = " + "[" + rgbColourArray[this.xPos] + "]",
+      windowHeight / 4,
+      this.x
+    );
     pop();
   }
 }
