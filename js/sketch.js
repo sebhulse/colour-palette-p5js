@@ -1,8 +1,9 @@
 let rectangles;
 let colourArray;
-colourArray = ["#ed225d", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
+colourArray = ["#ffaa00", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
 let colourPicker;
 let hexedColour;
+let rgbColourArray;
 
 class Rectangle {
   constructor(xPos, count, colour) {
@@ -18,6 +19,11 @@ class Rectangle {
     this.strokeWeight = 3;
     this.crosConst = 25;
     this.crossFactor = this.width - this.crosConst * 2;
+    if (this.width / 4 <= 80) {
+      this.textSize = this.width / 4;
+    } else {
+      this.textSize = 80;
+    }
   }
 
   selectRectangle(dark) {
@@ -81,13 +87,13 @@ class Rectangle {
 
   textDraw() {
     push();
-    textSize(this.width / 4);
+    textSize(this.textSize);
     fill(0);
     noStroke();
     translate(this.width / 2, windowHeight / 2);
     textAlign(CENTER, CENTER);
     rotate(radians(270));
-    text(colourArray[this.xPos], -(windowHeight / 4), this.x);
+    text(colourArray[this.xPos], (windowHeight / 4) * -1, this.x);
     pop();
   }
 }
@@ -95,6 +101,7 @@ class Rectangle {
 function popRectangle(index) {
   rectangles.splice(index, 1);
   colourArray.splice(index, 1);
+  rgbColourArray.splice(index, 1);
   redraw();
 }
 
@@ -123,12 +130,12 @@ function submitColour() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  rectangles = [];
-
   colourPicker = createColorPicker();
   colourPicker.input(submitColour);
-  colourPicker.size(windowWidth / 2, 60);
+  colourPicker.size(windowWidth / 2, windowHeight / 15);
   colourPicker.center();
+
+  rectangles = [];
 }
 
 function draw() {
@@ -142,6 +149,24 @@ function draw() {
       new Rectangle(index, colourArray.length, colourArray[index])
     );
   }
+
+  function unhexColour(i) {
+    let rgbColour = unhex([
+      colourArray[i].substr(1, 2),
+      colourArray[i].substr(3, 2),
+      colourArray[i].substr(5, 2),
+    ]);
+    return rgbColour;
+  }
+
+  function makeRgbColourArray() {
+    rgbColourArray = [];
+    for (let index = 0; index < colourArray.length; index++) {
+      rgbColourArray.push(unhexColour(index));
+    }
+  }
+
+  makeRgbColourArray();
 
   for (let i = 0; i < rectangles.length; i++) {
     rectangles[i].rectangleDraw();
