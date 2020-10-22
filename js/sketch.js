@@ -19,10 +19,10 @@ class Rectangle {
     this.strokeWeight = 3;
     this.crosConst = 25;
     this.crossFactor = this.width - this.crosConst * 2;
-    if (this.width / 4 <= 80) {
+    if (this.width / 4 <= 50) {
       this.textSize = this.width / 4;
     } else {
-      this.textSize = 80;
+      this.textSize = 50;
     }
   }
 
@@ -93,12 +93,8 @@ class Rectangle {
     translate(this.width / 2, windowHeight / 2);
     textAlign(CENTER, CENTER);
     rotate(radians(270));
-    text(colourArray[this.xPos], (windowHeight / 4) * -1, this.x);
-    text(
-      "rgb = " + "[" + rgbColourArray[this.xPos] + "]",
-      windowHeight / 4,
-      this.x
-    );
+    text("Hex: " + colourArray[this.xPos], (windowHeight / 4) * -1, this.x);
+    text("rgb(" + rgbColourArray[this.xPos] + ")", windowHeight / 4, this.x);
     pop();
   }
 }
