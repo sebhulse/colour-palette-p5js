@@ -81,14 +81,13 @@ class Rectangle {
 
   textDraw() {
     push();
-    textSize(windowHeight / 15);
+    textSize(this.width / 4);
     fill(0);
     noStroke();
     translate(this.width / 2, windowHeight / 2);
     textAlign(CENTER, CENTER);
     rotate(radians(270));
     text(colourArray[this.xPos], -(windowHeight / 4), this.x);
-    console.log(windowHeight);
     pop();
   }
 }
@@ -143,8 +142,6 @@ function draw() {
       new Rectangle(index, colourArray.length, colourArray[index])
     );
   }
-
-  console.log(rectangles);
 
   for (let i = 0; i < rectangles.length; i++) {
     rectangles[i].rectangleDraw();
