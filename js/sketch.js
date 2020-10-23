@@ -167,17 +167,12 @@ function isLight(color) {
 function lerpedColour(colour) {
   colorMode(RGB);
   let from = color(colour);
-  console.log("from " + from);
   let to = color(0, 0, 0);
-  console.log("to " + to);
   let to2 = color(255, 255, 255);
-  console.log("to2 " + to2);
 
   if (isLight(colour)) {
-    console.log("lerped: " + lerpColor(from, to, 0.5));
     return lerpColor(from, to, 0.5);
   } else {
-    console.log("lerped: " + lerpColor(from, to2, 0.5));
     return lerpColor(from, to2, 0.5);
   }
 }
@@ -200,7 +195,6 @@ function draw() {
   rectangles = [];
 
   makeRgbColourArray();
-  // console.log(lerpedColour(123, 123, 123));
 
   for (let index = 0; index < colourArray.length; index++) {
     rectangles.push(
