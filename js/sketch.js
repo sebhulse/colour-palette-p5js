@@ -1,15 +1,16 @@
 let rectangles;
 let colourArray;
-colourArray = ["#ffaa00", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
+colourArray = ["#000000", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
 let colourPicker;
 let hexedColour;
 let rgbColourArray;
 
 class Rectangle {
-  constructor(xPos, count, colour) {
+  constructor(xPos, count, colour, rgbColour) {
     this.xPos = xPos;
     this.count = count;
     this.colour = colour;
+    this.rgbColour = rgbColour;
 
     this.width = windowWidth / this.count;
     this.y = 0;
@@ -19,11 +20,12 @@ class Rectangle {
     this.strokeWeight = 3;
     this.crosConst = 25;
     this.crossFactor = this.width - this.crosConst * 2;
-    if (this.width / 4 <= 50) {
+    if (this.width / 4 <= 40) {
       this.textSize = this.width / 4;
     } else {
-      this.textSize = 50;
+      this.textSize = 40;
     }
+    this.lerpedColour = lerpedColour(this.rgbColour);
   }
 
   selectRectangle(dark) {
@@ -88,7 +90,7 @@ class Rectangle {
   textDraw() {
     push();
     textSize(this.textSize);
-    fill(0);
+    fill(this.lerpedColour);
     noStroke();
     translate(this.width / 2, windowHeight / 2);
     textAlign(CENTER, CENTER);
@@ -128,6 +130,58 @@ function submitColour() {
   redraw();
 }
 
+function unhexColour(i) {
+  let rgbColour = unhex([
+    colourArray[i].substr(1, 2),
+    colourArray[i].substr(3, 2),
+    colourArray[i].substr(5, 2),
+  ]);
+  return rgbColour;
+}
+
+function makeRgbColourArray() {
+  rgbColourArray = [];
+  for (let index = 0; index < colourArray.length; index++) {
+    rgbColourArray.push(unhexColour(index));
+  }
+}
+
+function isLight(color) {
+  // https://awik.io/determine-color-bright-dark-using-javascript/
+  var r, g, b, hsp;
+
+  r = color[0];
+  g = color[1];
+  b = color[2];
+
+  // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+  hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+
+  if (hsp > 127.5) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function lerpedColour(colour) {
+  colorMode(RGB);
+  let from = color(colour);
+  console.log("from " + from);
+  let to = color(0, 0, 0);
+  console.log("to " + to);
+  let to2 = color(255, 255, 255);
+  console.log("to2 " + to2);
+
+  if (isLight(colour)) {
+    console.log("lerped: " + lerpColor(from, to, 0.5));
+    return lerpColor(from, to, 0.5);
+  } else {
+    console.log("lerped: " + lerpColor(from, to2, 0.5));
+    return lerpColor(from, to2, 0.5);
+  }
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -145,29 +199,19 @@ function draw() {
 
   rectangles = [];
 
+  makeRgbColourArray();
+  // console.log(lerpedColour(123, 123, 123));
+
   for (let index = 0; index < colourArray.length; index++) {
     rectangles.push(
-      new Rectangle(index, colourArray.length, colourArray[index])
+      new Rectangle(
+        index,
+        colourArray.length,
+        colourArray[index],
+        rgbColourArray[index]
+      )
     );
   }
-
-  function unhexColour(i) {
-    let rgbColour = unhex([
-      colourArray[i].substr(1, 2),
-      colourArray[i].substr(3, 2),
-      colourArray[i].substr(5, 2),
-    ]);
-    return rgbColour;
-  }
-
-  function makeRgbColourArray() {
-    rgbColourArray = [];
-    for (let index = 0; index < colourArray.length; index++) {
-      rgbColourArray.push(unhexColour(index));
-    }
-  }
-
-  makeRgbColourArray();
 
   for (let i = 0; i < rectangles.length; i++) {
     rectangles[i].rectangleDraw();
