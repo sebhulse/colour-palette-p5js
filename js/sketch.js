@@ -2,8 +2,9 @@ let rectangles;
 let colourArray;
 colourArray = ["#000000", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
 let colourPicker;
-let hexedColour;
+let submitButton;
 let rgbColourArray;
+let currentHexColour;
 
 class Rectangle {
   constructor(xPos, count, colour, rgbColour) {
@@ -20,16 +21,16 @@ class Rectangle {
     this.strokeWeight = 3;
     this.crosConst = 25;
     this.crossFactor = this.width - this.crosConst * 2;
-    if (this.width / 4 <= 40) {
+    if (this.width / 4 <= 35) {
       this.textSize = this.width / 4;
     } else {
-      this.textSize = 40;
+      this.textSize = 35;
     }
     this.lerpedColour = lerpedColour(this.rgbColour);
   }
 
-  selectRectangle(dark) {
-    this.stroke = dark;
+  selectRectangle() {
+    this.stroke = this.lerpedColour;
   }
 
   crossContains(px, py) {
@@ -59,7 +60,7 @@ class Rectangle {
   }
 
   crossDraw() {
-    stroke(0);
+    stroke(this.lerpedColour);
     line(
       this.x + this.crossFactor,
       this.y + this.crosConst,
@@ -82,7 +83,7 @@ class Rectangle {
       this.x + this.strokeWeight / 2,
       this.y + this.strokeWeight / 2,
       this.width - this.strokeWeight,
-      windowHeight - this.strokeWeight,
+      windowHeight - this.strokeWeight - 30,
       this.roundedEdges
     );
   }
@@ -108,13 +109,21 @@ function popRectangle(index) {
   redraw();
 }
 
+function createCurrentColourField(index) {
+  currentHexColour = createInput(colourArray[index]);
+  currentHexColour.position(windowWidth / 2, windowHeight - 30);
+  currentRgbColour = createInput("rgb(" + rgbColourArray[index] + ")");
+  currentRgbColour.position((windowWidth * 3) / 4, windowHeight - 30);
+}
+
 function mousePressed() {
   for (let i = 0; i < colourArray.length; i++) {
     if (
       rectangles[i].bodyContains(mouseX, mouseY) &&
       !rectangles[i].crossContains(mouseX, mouseY)
     ) {
-      rectangles[i].selectRectangle(0);
+      rectangles[i].selectRectangle();
+      createCurrentColourField(i);
     } else if (rectangles[i].crossContains(mouseX, mouseY)) {
       popRectangle(i);
     } else {
@@ -125,7 +134,7 @@ function mousePressed() {
 }
 
 function submitColour() {
-  hexedColour = colourPicker.value();
+  let hexedColour = colourPicker.value();
   colourArray.push(hexedColour);
   redraw();
 }
@@ -178,12 +187,24 @@ function lerpedColour(colour) {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight - 30);
 
   colourPicker = createColorPicker();
-  colourPicker.input(submitColour);
   colourPicker.size(windowWidth / 2, windowHeight / 15);
   colourPicker.center();
+  submitButton = createButton("Submit Colour");
+  submitButton.mousePressed(submitColour);
+  submitButton.center();
+
+  let text1 = createDiv(
+    "The Hex and RGB values of the currently selected colour are: "
+  );
+  text1.style("font-family", "Helvetica");
+
+  currentHexColour = createInput();
+  currentHexColour.position(windowWidth / 2, windowHeight - 30);
+  currentRgbColour = createInput();
+  currentRgbColour.position((windowWidth * 3) / 4, windowHeight - 30);
 
   rectangles = [];
 }
