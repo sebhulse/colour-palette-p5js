@@ -1,6 +1,6 @@
 let rectangles;
 let colourArray;
-colourArray = ["#000000", "#d95000", "#c3d117", "#00c7fc", "#c3d117"];
+colourArray = ["#FF7B00", "#FF9500", "#FFAA00", "#FFC300", "#FFDD00"];
 let colourPicker;
 let submitButton;
 let rgbColourArray;
